@@ -299,7 +299,7 @@
             </div>
         </div>
         <!-- contact -->
-        <div id="contact" class="grid md:grid-cols-2 p-6 lg:px-24 lg:gap-x-60 font-ProductSans  ">
+        <div id="contact" class="grid md:grid-cols-2  p-6 lg:px-24 lg:gap-x-60 font-ProductSans  ">
             <div>
                 <div class="text-primary text-5xl pr-16 font-bold tracking-wide mb-14">
                     {{ $t('contactUs') }}
@@ -377,7 +377,7 @@
             </div>
 
 
-            <form class=" mt-5 ">
+            <form class=" p-8 ">
                 <div class="grid gap-6 mb-6 lg:grid-cols-1">
                     <input type="text" id="default-input"
                         class="bg-[#F4F4F4] text-gray-900 text-sm rounded-lg block w-full p-4"
@@ -407,13 +407,13 @@
                         placeholder="Bonjour,..."></textarea>
                 </div>
                 <div class="mb-6">
-                    <button type="button" class="text-white bg-black font-medium rounded-lg text-sm w-full p-4">
+                    <button type="button" class=" text-white bg-black font-medium rounded-lg text-sm w-full p-4">
                         Envoyer
                     </button>
                 </div>
             </form>
-
-        </div>
+            </div>
+        
     </main>
 </template>
 <script>

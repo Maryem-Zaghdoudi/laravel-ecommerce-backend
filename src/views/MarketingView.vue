@@ -58,7 +58,7 @@ export default {
 <div class="grid lg:grid-cols-2 grid-col-1 md:flex-row lg:mb-3 mb-10 ">
   
   <div class="bg-[url('@/assets/Left-2.svg')]  lg:mb-0  pt-32  lg:pt-64 ">
-    <img src="@/assets/looper-r.svg" alt="" class="absolute -top-64"/>
+    <img src="@/assets/looper-r.svg" alt="" class="absolute hidden md:block -top-64"/>
     <div class="">
     <div class="text-white font-blod text-6xl text-center mb-2">
       Pack Initial
@@ -111,7 +111,7 @@ export default {
     </div>
   </div>
   <div class="bg-[url('@/assets/right-3.svg')]  lg:mb-0  pt-64 ">
-    <img src="@/assets/looper-l.svg" alt="" class="absolute right-0 -top-[420px]"/> 
+    <img src="@/assets/looper-l.svg" alt="" class="absolute hidden md:block right-0 -top-[420px]"/> 
     <div class="">
     <div class="text-white font-blod text-6xl text-center mb-2">
       Pack Avance
@@ -129,7 +129,7 @@ export default {
  </div>
 <div class="grid lg:grid-cols-2 grid-col-1  md:flex-row lg:mb-3 mb-10 ">
   <div class="bg-[url('@/assets/Left-5.svg')]  pt-64  ">
-     <img src="@/assets/Looper-5.svg" alt="" class="absolute -top-96"/>
+     <img src="@/assets/Looper-5.svg" alt="" class="absolute hidden md:block -top-96"/>
     <div class="">
     <div class="text-white font-blod text-6xl text-center mb-2">
       Pack Expert

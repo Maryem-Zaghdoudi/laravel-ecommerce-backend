@@ -1,4 +1,5 @@
 <template>
+<SidebarNavHome :open="open" />
     <header>
         <div class="relative z-50 items-center">
             <div class="flex justify-around fixed top-0 left-0 right-0 items-center ">
@@ -6,14 +7,15 @@
                     <Logo />
                 </RouterLink>
 
-                <nav class="w-full mx-4 xl:w-5/6 text-primary">
-                    <font-awesome-icon icon="bars" class="block md:hidden mr-2" width="48" />
-                    <a href="#top" class="flex items-center">
+                <nav  class="w-full mx-4 xl:w-5/6 text-primary ">
+                    <font-awesome-icon @click="toggle()"
+                        v-click-outside="() => hideDropdown()" icon="bars" class="block md:hidden mr-2" width="48" />
+                    <a href="#top" class="flex items-center ">
                         <span class="hidden md:block mr-12">Home </span>
                     </a>
 
-                    <a href="#about" class="flex items-center">
-                        <span class="hidden md:block mr-12">A Propos</span>
+                    <a href="#about" class="flex items-center ">
+                        <span class="hidden md:block mr-12 ">A Propos</span>
                     </a>
                     <a href="#products" class="flex items-center">
                         <span class="hidden md:block mr-12">produits</span>
@@ -32,11 +34,17 @@
 
 </template>
 <script>
+
 import Logo from './Logo.vue';
+
+import SidebarNavHome from './SidebarNavHome.vue';
+
 export default {
+     
     props: { open: Boolean, items: Array },
     data() {
         return {
+            open: false,
             opened: this.open,
             dimmer: true,
             right: false,
@@ -49,20 +57,20 @@ export default {
         },
     },
     methods: {
+        
         toggle() {
-            this.opened = !this.opened;
+            this.open = !this.open;
         },
         hideDropdown() {
             // console.log("close dropdown", this.opened);
-            this.opened = !this.opened;
+            this.open = false;
         },
     },
-    components: { Logo }
+    components: { Logo, SidebarNavHome }
 };
 </script>
 <style>
 @import "@/assets/base.css";
-
 #app {
     margin: 0 auto;
     padding-top: 4.5%;
@@ -70,13 +78,11 @@ export default {
     padding-top: 0%;
     font-family: "Product Sans";
 }
-
 /* @media (max-width: 576px) {
     #app {
         padding-top: 0%;
     }
 } */
-
 nav {
     text-align: center;
     margin-top: 2rem;

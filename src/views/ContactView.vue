@@ -91,7 +91,7 @@
                         </select>
                     </div>
                     <div class="lg:col-span-2">
-                        <input type="text" id="default-input"
+                        <Field name="field" :rules="isRequired" type="text" id="default-input"
                             class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-lg block w-full p-2"
                             placeholder="Nom Complet" />
                     </div>
@@ -134,8 +134,13 @@
 
 </template>
 <script>
-
+import { Field, Form, ErrorMessage } from 'vee-validate';
 export default {
+    components: {
+    Field,
+    Form,
+    ErrorMessage,
+  },
     name: "modal",
     data() {
         return {
@@ -158,6 +163,14 @@ export default {
         console.log('ready');
     },
     methods: {
+        methods: {
+    isRequired(value) {
+      if (value && value.trim()) {
+        return true;
+      }
+      return 'This is required';
+    },
+  },
         goToStep: function (step) {
             this.activePhase = step;
         }

@@ -65,11 +65,13 @@
                     </button>
                   </div>
                   <!-- step1 -->
-         <div class="px-5 lg:px-24 ">
-        <div class=" grid-cols-1" id="user_detail1" v-if="activePhase == 1">
+         <div class="px-5 lg:px-24 lg:py-0 py-8 ">
+        <div class=" grid-cols-1" id="user_detail1" v-if="step == 1">
         <!-- stepper -->
          <div class="flex flex-col md:flex-row lg:items-center md:items-center gap-3 ">
+          
                         <div class="flex md:flex-row   ">
+                          
                         <div class="">
                        <div class="w-8 h-8  rounded-full bg-[#0059C8] text-white flex justify-center items-center">
                         <a href="# " class="">
@@ -117,8 +119,11 @@
            
               </div>
         </div>
+        
             <form class=" mt-9 " >
+              
                 <div class="grid  mb-6 lg:grid-cols-3  gap-4">
+                  
                     <div>
     
     <select id="location" name="location" class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
@@ -128,10 +133,13 @@
     </select>
   </div>
                     <div class="lg:col-span-2">
-                        <input type="text" id="last_name"
+                        <input type="text" id="last_name" 
                             class="bg-[#ffffff] text-gray-900 text-sm rounded-lg border border-gray-300 block w-full p-2"
-                            placeholder="Nom Complet" :value="nom" @input="nom=$event.target.value" required />
+                            placeholder="Nom Complet"   required />
+                           
+                            
                     </div>
+                    
                 </div>
                 <div class="grid  mb-6 lg:grid-cols-4 gap-4">
                     <div>
@@ -196,7 +204,7 @@
                    </div>
         </div>
          <!-- step2 -->
-        <div class="" id="user_detail2" v-if="activePhase == 2">
+        <div class="" id="user_detail2" v-if="step == 2">
                <div class="flex flex-col md:flex-row lg:items-center md:items-center gap-3 ">
                         <div class="flex md:flex-row   ">
                         <div class="">
@@ -341,7 +349,7 @@
                    </div>
         </div>
          <!-- step3 -->
-        <div class="" id="step3" v-if="activePhase == 3">
+        <div class="" id="step3" v-if="step == 3">
           <div class="flex flex-col md:flex-row lg:items-center md:items-center gap-3 ">
                         <div class="flex md:flex-row   ">
                         <div class="">
@@ -441,12 +449,12 @@
                     <button  @click.prevent="goToStep(4)"  class="text-white bg-[#0064D2] leading-6 font-medium rounded-full text-base w-full lg:w-[365px] p-2">Effectuer</button>
                    </div>
                    <div class="text-center">
-                    <button  @click.prevent="goToStep(2)"  class="text-black bg-[#F4F4F4] leading-6 font-medium rounded-full text-base w-full lg:w-[365px] p-2">Retour</button>
+                    <button  @click.prevent="PrevToStep(2)"  class="text-black bg-[#F4F4F4] leading-6 font-medium rounded-full text-base w-full lg:w-[365px] p-2">Retour</button>
                    </div>
                 </div>
            </div>
         </div>
-        <div class=" py-11" id="step3" v-if="activePhase == 4">
+        <div class=" py-11" id="step3" v-if="step == 4">
         
        <div class="justify-center flex mb-7 ">
         
@@ -487,19 +495,34 @@ export default {
   name: "modal",
   data() {
     return {
-      activePhase: 1,
-       nom :'',
+      showDetail: true,
+      step: 1,
+      totalsteps:4,
+      errors:[] ,
+        
      
       toggleModal: false,
-     
+      toggleModal1: false,
+      toggleModal2: false
     };
   },
   ready:function(){
     console.log('ready');
   },
-  methods:{
-    goToStep: function(step){
-      this.activePhase = step;
+   methods:{
+    goToStep: function(){
+      if(this.step == 1)
+      {
+        if(!this.form.nomcomplet)
+        {
+          this.errors = 'please fill out your name';
+          return true;
+        }
+      }
+     this.step++;
+    },
+    PrevToStep: function(){
+     this.step--;
     }
   },
 }

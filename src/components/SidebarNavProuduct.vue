@@ -9,22 +9,20 @@
 
         <ul>
             <li class="py-5">
-                <RouterLink to="/"> Home ------ </RouterLink>
+                <RouterLink to="/"> Home </RouterLink>
             </li>
             <li class="py-5">
-                <RouterLink to="/new-arrivals"> New Arrivals</RouterLink>
+                <RouterLink to="/design"> Design</RouterLink>
             </li>
             <li class="py-5">
-                <RouterLink to="/shop"> Shop</RouterLink>
+                <RouterLink to="/coding"> Coding</RouterLink>
             </li>
             <li class="py-5">
-                <RouterLink to="/the-interior-gates"
-                    >The Interior Gates
+                <RouterLink to="/marketing"
+                    >Marketing Digital
                 </RouterLink>
             </li>
-            <li class="py-5">
-                <RouterLink to="/cart">Shoping Cart </RouterLink>
-            </li>
+           
             <li class="py-5">
                 <RouterLink to="/contact"> Contact</RouterLink>
             </li>
@@ -49,12 +47,12 @@ export default {
     },
     methods: {
         toggle() {
-            this.opened = !this.opened;
+            this.open = !this.open;
         },
         hideDropdown() {
             // console.log("close dropdown", this.opened);
 
-            this.opened = !this.opened;
+            this.open = !this.open;
         },
     },
 };

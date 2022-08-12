@@ -1,4 +1,5 @@
 <template>
+
     <header>
         <div class="bg-[url('@/assets/shopbg.png')] relative z-50 items-center">
             <div class="flex justify-around  absolute top-0 left-0 right-0   ">
@@ -9,23 +10,24 @@
                 </RouterLink>
 
                 <nav class="w-full mx-4 xl:w-5/6 text-black">
-                    <font-awesome-icon icon="bars" class="block lg:hidden mr-2" width="48" />
-                    <RouterLink to="#" class="flex items-center">
+                    <font-awesome-icon @click="toggle()"
+                        v-click-outside="() => hideDropdown()" icon="bars" class="block lg:hidden mr-2" width="48" />
+                    <a href="#" class="flex items-center">
                         <span class="hidden lg:block mr-12 text-white">Home </span>
-                    </RouterLink>
+                    </a>
 
-                    <RouterLink to="#" class="flex items-center">
+                    <a href="#" class="flex items-center">
                         <span class="hidden lg:block mr-12">Design</span>
-                    </RouterLink>
-                    <RouterLink to="/shop" class="flex items-center">
+                    </a>
+                    <a href="/shop" class="flex items-center">
                         <span class="hidden lg:block mr-12">Coding</span>
-                    </RouterLink>
-                    <RouterLink to="/shop" class="flex items-center">
+                    </a>
+                    <a href="/shop" class="flex items-center">
                         <span class="hidden lg:block mr-12">Marketing Digital</span>
-                    </RouterLink>
-                    <RouterLink to="#" class="flex items-center">
+                    </a>
+                    <ak href="#" class="flex items-center">
                         <span class="hidden lg:block mr-12">contact</span>
-                    </RouterLink>
+                    </ak>
                     <select class="border-none py-0 bg-transparent  " v-model="$i18n.locale" @change="changeLanguage">
                         <option class="bg-transparent text-primary" value="en">En</option>
                         <option class="bg-transparent text-primary" value="fr">Fr</option>
@@ -38,10 +40,13 @@
 </template>
 <script>
 import Logo from './Logo.vue';
+import SidebarNavProuduct from './SidebarNavProuduct.vue';
+import SidebarNavHome from './SidebarNavHome.vue';
 export default {
     props: { open: Boolean, items: Array },
     data() {
         return {
+            open: false,
             opened: this.open,
             dimmer: true,
             right: false,
@@ -55,14 +60,14 @@ export default {
     },
     methods: {
         toggle() {
-            this.opened = !this.opened;
+            this.open = !this.open;
         },
         hideDropdown() {
             // console.log("close dropdown", this.opened);
-            this.opened = !this.opened;
+              this.open = false;
         },
     },
-    components: { Logo }
+    components: { Logo, SidebarNavHome }
 };
 </script>
 <style>

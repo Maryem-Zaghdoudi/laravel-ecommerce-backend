@@ -1,4 +1,5 @@
 <template>
+<SidebarNavProuduct :open="open" />
     <header>
         <div class="relative z-50 items-center">
             <div class="flex justify-around  absolute top-0 left-0 right-0   ">
@@ -9,7 +10,8 @@
                 </RouterLink>
 
                 <nav class="w-full mx-4 xl:w-5/6 text-white">
-                    <font-awesome-icon icon="bars" class="block lg:hidden mr-2" width="48" />
+                    <font-awesome-icon @click="toggle()"
+                        v-click-outside="() => hideDropdown()" icon="bars" class="block lg:hidden mr-2" width="48" />
                     <RouterLink to="/" class="flex items-center">
                         <span class="hidden lg:block mr-12 text-white">Home </span>
                     </RouterLink>
@@ -38,10 +40,14 @@
 </template>
 <script>
 import Logo from './Logo.vue';
+
+import SidebarNavProuduct from './SidebarNavProuduct.vue';
 export default {
+     
     props: { open: Boolean, items: Array },
     data() {
         return {
+            open: false,
             opened: this.open,
             dimmer: true,
             right: false,
@@ -54,15 +60,16 @@ export default {
         },
     },
     methods: {
+        
         toggle() {
-            this.opened = !this.opened;
+            this.open = !this.open;
         },
         hideDropdown() {
             // console.log("close dropdown", this.opened);
-            this.opened = !this.opened;
+            this.open = false;
         },
     },
-    components: { Logo }
+    components: { Logo, SidebarNavProuduct }
 };
 </script>
 <style>

@@ -511,31 +511,7 @@ function ShowModal() {
           <h1 class="text-4xl font-extrabold tracking-tight "></h1>
 
           <div class="flex items-center">
-            <!-- <Menu as="div" class="relative inline-block text-left">
-              <div>
-                <MenuButton class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:">
-                  Sort
-                  <ChevronDownIcon class="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-primary" aria-hidden="true" />
-                </MenuButton>
-              </div>
-
-              <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                <MenuItems class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div class="py-1">
-                    <MenuItem v-for="option in sortOptions" :key="option.name" v-slot="{ active }">
-                      <a :href="option.href" :class="[option.current ? 'font-medium ' : 'text-primary', active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm']">
-                        {{ option.name }}
-                      </a>
-                    </MenuItem>
-                  </div>
-                </MenuItems>
-              </transition>
-            </Menu> -->
-
-            <!-- <button type="button" class="p-2 -m-2 ml-5 sm:ml-7 text-gray-400 hover:text-primary">
-              <span class="sr-only">View grid</span>
-              <ViewGridIcon class="w-5 h-5" aria-hidden="true" />
-            </button> -->
+          
             <button type="button" class="p-2  ml-4 mr-5  hover:text-secondary lg:hidden  flex flex-row"
               @click="mobileFiltersOpen = true">
               <span class="mr-2">Filters</span>
