@@ -19,7 +19,7 @@ const router = createRouter({
         },
         {
             path: "/market",
-            name: "intone-market",
+            name: "/market",
             component: () => import("../views/ProductsSliderView.vue"),
         },
         {
