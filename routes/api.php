@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +18,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::resource('products', ProductController::class);
+Route::get('category/{id}', [CategoryController::class , 'get_subcategories']);
+Route::get('category0/{id}', [CategoryController::class , 'get_subcategories_position0']);
+Route::post('search', [ProductController::class , 'Search']);
+
+Route::get('products_by_category/{id}', [ProductController::class, 'products_by_category']);
+
+Route::resource('categories', CategoryController::class);
+Route::resource('tags', TagController::class);
+
+
+

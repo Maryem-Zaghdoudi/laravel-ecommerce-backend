@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Foreach_;
 
 class CategoryController extends Controller
 {
@@ -12,9 +13,42 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function get_subcategories($id){
+        $categories= Category::find($id)->allChildren();
+
+       foreach ($categories as $category) {
+            $category->setAttribute("count" , $category->products->count());
+            
+       }
+
+        return response()->json(
+            $categories
+        );
+    }
+    public function get_subcategories_position0($id){
+        $categories=Category::where('position' , 1)->where('parent_id' , $id )->get();
+        foreach ($categories as $category) {
+            $category->setAttribute("children" , $category->allChildren());
+            
+       }
+
+        return response()->json(
+            $categories
+        );
+    }
+    
+
     public function index()
     {
-        //
+        $Allcategories=Category::all();
+        $categories=Category::where('position' , 0)->get();
+       
+        return response()->json([
+                'Allcategories' => $Allcategories ,
+                'Parentcategories' => $categories,
+            ]);
+     
     }
 
     /**
@@ -36,6 +70,25 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        if ($request->parent_id==0){
+            $position = 0;
+        }
+        else{
+            $position = Category::find($request->parent_id)->position + 1;
+        }
+        $category = Category::create(
+            [
+                "name"=> $request->name,
+                "slug"=> $request->slug,
+                "description"=> $request->description,
+                "icon"=> $request->icon,
+                "parent_id"=> $request->parent_id,
+                "position"=> $position
+                    
+                ]
+        );
+        return response()->json($category);
+
     }
 
     /**
@@ -67,9 +120,29 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
         //
+        if ($request->parent_id==0){
+            $position = 0;
+        }
+        else{
+            $position = Category::find($request->parent_id)->position + 1;
+        }
+       Category::whereId($id)->update(
+            [
+                "name"=> $request->name,
+                "slug"=> $request->slug,
+                "description"=> $request->description,
+                "icon"=> $request->icon,
+                "parent_id"=> $request->parent_id,
+                "position"=> $position
+                    
+                ]
+        );
+        return response()->json("category updated");
+
+        
     }
 
     /**
@@ -78,8 +151,12 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+
+
+    public function destroy($id)
     {
-        //
+        Category::findOrFail($id)->delete();
+        return response()->json('category deleted!');
     }
+   
 }
