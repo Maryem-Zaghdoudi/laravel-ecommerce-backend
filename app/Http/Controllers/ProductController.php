@@ -130,7 +130,8 @@ class ProductController extends Controller
             array_push($products , $category->products);
         }
         return response()->json(
-            $products[0]
+            $products
+            // $products[0]
        );
     }
 
@@ -138,19 +139,41 @@ class ProductController extends Controller
         $category = Category::find($id);
         $category_ids[0]= intval($id);
         $category_ids = array_merge($category_ids , $category->allChildren()->pluck('id')->all());
+        
         return ($category_ids);
     }
 
     public function Search(Request $request){
-        $products=Product::all();
-        $products= Product::where('title' , 'LIKE' , '%'.$request->search .'%')->get();
-        
+        // $products=Product::all();
+        // $products= Product::where('title' , 'LIKE' , '%'.$request->word .'%')->get();
+        $products=array();
+        // foreach($request->category as $category){
+            $category = Category::find($request->category['id']);          
+            $category_ids[0]= intval($category['id']);
+            $this_category = array_merge($category_ids , $category->allChildren()->pluck('id')->all());
+            $id_categories= array_unique(array_merge($products , $this_category));
+            // $products[0]=Category::find($id_categories[0])->products;
+            // foreach ($id_categories as $category_id ) {
+            //     if((isset($products[$category->product])) ==false){
+            //         unset($products);
+            //     }
+                
+
+            //     }
+            //     $category=Category::find($category_id);
+            //     array_push($products , $category->products);
+            // }
+            foreach ($id_categories as $category_id ) {
+                $category=Category::find($category_id);
+                array_push($products , $category->products);
+            }
+            return response()->json(
+                $products[0]
+           );
         
 
-        return response()->json(
-            $products 
-       );
     }
+
     /*public function Search(Request $request){
         switch($request->tri){
             case('price_croissant'){
