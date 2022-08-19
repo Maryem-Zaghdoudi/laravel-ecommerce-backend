@@ -152,23 +152,13 @@ class ProductController extends Controller
             $category_ids[0]= intval($category['id']);
             $this_category = array_merge($category_ids , $category->allChildren()->pluck('id')->all());
             $id_categories= array_unique(array_merge($products , $this_category));
-            // $products[0]=Category::find($id_categories[0])->products;
-            // foreach ($id_categories as $category_id ) {
-            //     if((isset($products[$category->product])) ==false){
-            //         unset($products);
-            //     }
-                
-
-            //     }
-            //     $category=Category::find($category_id);
-            //     array_push($products , $category->products);
-            // }
+         
             foreach ($id_categories as $category_id ) {
                 $category=Category::find($category_id);
                 array_push($products , $category->products);
             }
             return response()->json(
-                $products[0]
+                $products
            );
         
 

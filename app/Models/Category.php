@@ -12,7 +12,7 @@ class Category extends Model
     protected $guarded = [];
     protected $fillable = ['id','name' , 'slug' ,'description' , 'icon',  'parent_id', 'position' , 'product_id' ];
 
-    public function products()
+public function products()
 {
     return $this->belongsToMany(Product::class , 'product_categories');
 }
