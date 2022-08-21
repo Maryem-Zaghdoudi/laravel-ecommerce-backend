@@ -142,27 +142,7 @@ class ProductController extends Controller
         
         return ($category_ids);
     }
-
-    public function Search(Request $request){
-        // $products=Product::all();
-        // $products= Product::where('title' , 'LIKE' , '%'.$request->word .'%')->get();
-        $products=array();
-        // foreach($request->category as $category){
-            $category = Category::find($request->category['id']);          
-            $category_ids[0]= intval($category['id']);
-            $this_category = array_merge($category_ids , $category->allChildren()->pluck('id')->all());
-            $id_categories= array_unique(array_merge($products , $this_category));
-         
-            foreach ($id_categories as $category_id ) {
-                $category=Category::find($category_id);
-                array_push($products , $category->products);
-            }
-            return response()->json(
-                $products
-           );
-        
-
-    }
+    
 
     /*public function Search(Request $request){
         switch($request->tri){
