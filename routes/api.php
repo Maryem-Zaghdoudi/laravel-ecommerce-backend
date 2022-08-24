@@ -29,6 +29,10 @@ Route::get('category/{id}', [CategoryController::class , 'get_subcategories']);
 Route::get('category0/{id}', [CategoryController::class , 'get_subcategories_position0']);
 Route::post('search', [ProductCategoryController::class , 'search']);
 
+Route::get('product/{id}', [ProductController::class , 'find_product']);
+Route::get('count', [ProductController::class , 'count']);
+
+
 Route::get('products_by_category/{id}', [ProductController::class, 'products_by_category']);
 
 Route::resource('categories', CategoryController::class);

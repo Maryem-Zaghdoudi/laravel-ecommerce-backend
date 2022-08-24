@@ -131,7 +131,16 @@ class ProductController extends Controller
         }
         return response()->json(
             $products
-            // $products[0]
+            
+       );
+    }
+
+    public function count(){
+
+        $count['promo']= Product::orderBy('created_at' , 'desc')->take(5)->count();
+        $count['recent']= Product::where('promotion' , '>' , 0)->count();
+        return response()->json(
+            $count
        );
     }
 
@@ -142,7 +151,13 @@ class ProductController extends Controller
         
         return ($category_ids);
     }
-    
+    public function find_product($id){
+         $product= Product::find($id);
+        return response()->json(
+            $product
+       );
+        
+    }
 
     /*public function Search(Request $request){
         switch($request->tri){

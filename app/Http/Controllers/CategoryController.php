@@ -23,20 +23,20 @@ class CategoryController extends Controller
        }
 
         return response()->json(
-            $categories
+           $categories
         );
     }
     public function get_subcategories_position0($id){
         $categories=Category::where('position' , 1)->where('parent_id' , $id )->get();
         foreach ($categories as $category) {
             $category->setAttribute("children" , $category->allChildren());
-            
        }
-
+    //    dd($categories);
         return response()->json(
             $categories
         );
     }
+
     
 
     public function index()

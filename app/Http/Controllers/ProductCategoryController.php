@@ -24,8 +24,10 @@ class ProductCategoryController extends Controller
     }
 
      public function search(Request $request) {
-        // $category=Category::find($request->category['id']);
-        // $productcat=ProductCategory::where('category_id' , $request->category['id'])->get();
+       
+        
+        //     $category=Category::find($request->category_id);
+        // $productcat=ProductCategory::where('category_id' , $request->category_id)->get();
         // $product_id= array();
         // foreach($productcat as $prodcat){
         //      array_push($product_id , $prodcat->product_id);
@@ -33,22 +35,63 @@ class ProductCategoryController extends Controller
 
         // $products= Product::whereIn('id' , $product_id)
         
-        // ->where('title' , 'LIKE' , '%'.$request->word .'%')
         // ->get();
-        $products=Product::where('title' , 'LIKE' , '%'.$request->word .'%')
+        
+          
+
+        $category=Category::find($request->category);
+        $productcat=ProductCategory::where('category_id' , $request->category)->get();
+        $product_id= array();
+        foreach($productcat as $prodcat){
+             array_push($product_id , $prodcat->product_id);
+        }
+
+        $products= Product::whereIn('id' , $product_id)
+        
+        ->where('title' , 'LIKE' , '%'.$request->word .'%')
         ->get();
+
+        $word=$request->word;
+        $category= $request->category_id;
+        $category_search=$request->category;
+        $products=Product::when($request->word,function($query,$word){
+            $query->where('title' , 'LIKE' , '%'.$word .'%');
+            
+        })->when($request->category,function($query,$category){
+            $productcat=ProductCategory::where('category_id' , $category)->get();
+            $product_id= array();
+            foreach($productcat as $prodcat){
+                 array_push($product_id , $prodcat->product_id);
+            };
+            $query->whereIn('id' , $product_id);
+            
+        })
+        ->when($request->category_id, function ($query , $category_search){
+            $productcat=ProductCategory::where('category_id' , $category_search)->get();
+        $product_id= array();
+        foreach($productcat as $prodcat){
+             array_push($product_id , $prodcat->product_id);
+        };
+
+        $query->whereIn('id' , $product_id);
+       
+        })
+        ->get();
+
         //les 5dernier projet
-        if ($request->recent ==True){
-            $products= Product::orderBy('created_at' , 'desc')->take(5)->get();
-        }
-        if ($request->promo ==True){
-            $products= Product::where('promotion' , '>' , 0)->get();
-        }
+        // if ($request->recent ==True){
+            // $products= Product::orderBy('created_at' , 'desc')->take(5)->get();
+            // $count= count($products);
+            
+        // }
+        // if ($request->promo ==True){
+            // $products= Product::where('promotion' , '>' , 0)->get();
+            // $count = count($products);
+        // }
+        // $products= Product::whereBetween('price' , [(float)$request->min , (float)$request->max])->get();
         return response()->json(
             $products
-            // $request->category['id']
        );
-
      }
 
     public function index()
