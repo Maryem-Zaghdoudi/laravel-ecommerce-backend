@@ -131,7 +131,16 @@ class ProductController extends Controller
         }
         return response()->json(
             $products
-            // $products[0]
+            
+       );
+    }
+
+    public function count(){
+
+        $count['recent']= Product::orderBy('created_at' , 'desc')->take(5)->count();
+        $count['promo']= Product::where('promotion' , '>' , 0)->count();
+        return response()->json(
+            $count
        );
     }
 
@@ -142,26 +151,12 @@ class ProductController extends Controller
         
         return ($category_ids);
     }
-
-    public function Search(Request $request){
-        // $products=Product::all();
-        // $products= Product::where('title' , 'LIKE' , '%'.$request->word .'%')->get();
-        $products=array();
-        // foreach($request->category as $category){
-            $category = Category::find($request->category['id']);          
-            $category_ids[0]= intval($category['id']);
-            $this_category = array_merge($category_ids , $category->allChildren()->pluck('id')->all());
-            $id_categories= array_unique(array_merge($products , $this_category));
-         
-            foreach ($id_categories as $category_id ) {
-                $category=Category::find($category_id);
-                array_push($products , $category->products);
-            }
-            return response()->json(
-                $products
-           );
+    public function find_product($id){
+         $product= Product::find($id);
+        return response()->json(
+            $product
+       );
         
-
     }
 
     /*public function Search(Request $request){
