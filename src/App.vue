@@ -24,9 +24,9 @@ function changeLanguage(obj) {
     </div>
 
     <div v-else>
-        <TheMenu />
+        <TheHomeMenu />
         <RouterView />
-        <TheFooter />
+        
     </div>
 
 </template>

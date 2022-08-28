@@ -1,8 +1,8 @@
 <template>
 <SidebarNavHome :open="open" />
-    <header>
-        <div class="relative z-50 items-center">
-            <div class="flex justify-around fixed top-0 left-0 right-0 items-center ">
+    <header class>
+        <div class="relative z-50 items-center bg-white">
+            <div class="flex justify-around fixed top-0 left-0 right-0 items-center bg-white ">
                 <RouterLink to="/" class="flex items-center">
                     <Logo />
                 </RouterLink>
@@ -23,7 +23,7 @@
                     <a href="/contact" class="flex items-center">
                         <span class="hidden md:block mr-12">contact</span>
                     </a>
-                    <select class="border-none py-0 bg-transparent  " v-model="$i18n.locale" @change="changeLanguage">
+                    <select class="border-none py-0 bg-transparent text-blue-700 " v-model="$i18n.locale" @change="changeLanguage">
                         <option value="en">En</option>
                         <option value="fr">Fr</option>
                     </select>

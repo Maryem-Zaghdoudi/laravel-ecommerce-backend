@@ -1,7 +1,7 @@
 <template>
 <SidebarNavProuduct :open="open" />
     <header>
-        <div class="relative z-50 items-center">
+        <div class="relative z-50 items-center ">
             <div class="flex justify-around  absolute top-0 left-0 right-0   ">
                 <RouterLink to="/" class="flex items-center">
                     <!-- <Logo /> -->

@@ -80,25 +80,25 @@
             </div>
 
 
-            <form class=" mt-5 ">
+            <form class=" mt-5 " @submit.prevent="contact()">
                 <div class="grid gap-3  mb-6 lg:grid-cols-3">
-                    <div>
-                        <select id="location" name="location"
+                    <div >
+                        <select id="location" name="location" 
                             class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                             <option>FR</option>
-                            <option selected="">Entité</option>
+                            <option selected="" >Entité</option>
                             <option>EN</option>
                         </select>
                     </div>
                     <div class="lg:col-span-2">
-                        <Field name="field" :rules="isRequired" type="text" id="default-input"
+                        <input name="field" v-model="form.nom" :rules="isRequired" type="text" id="default-input"
                             class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-lg block w-full p-2"
                             placeholder="Nom Complet" />
                     </div>
                 </div>
                 <div class="grid gap-3 mb-6 lg:grid-cols-3">
                     <div>
-                        <select id="location" name="location"
+                        <select id="location" name="location" v-model="form.pays"
                             class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                             <option>FR</option>
                             <option selected="">Pays</option>
@@ -106,19 +106,19 @@
                         </select>
                     </div>
                     <div class="lg:col-span-2">
-                        <input type="text" id="default-input"
+                        <input type="text" id="default-input" v-model="form.phone"
                             class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-lg block w-full p-2"
                             placeholder="Numéro de téléphone" />
                     </div>
                 </div>
                 <div class="grid gap-2 mb-6 ">
-                    <input type="text" id="default-input"
+                    <input type="text" id="default-input" v-model="form.adresse"
                         class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-lg block w-full p-2"
                         placeholder="Adresse électronique" />
                 </div>
 
                 <div class="mb-6">
-                    <textarea id="message" rows="6"
+                    <textarea id="message" rows="6" v-model="form.message"
                         class="bg-[#ffffff] text-gray-900 text-sm rounded-lg border block w-full p-4"
                         placeholder="Bonjour,..."></textarea>
                 </div>
@@ -144,14 +144,13 @@ export default {
     name: "modal",
     data() {
         return {
-            activePhase: 1,
-            user_detail1: {
-                name: '',
-                email: ''
-            },
-            user_detail2: {
-                city: '',
-                state: ''
+            form: {
+                entité: "",
+                phone: "",
+                adress: "",                
+                pays: "",
+                email: "",
+                message: "",
             },
 
 
@@ -163,6 +162,28 @@ export default {
         console.log('ready');
     },
     methods: {
+        contact() {
+            this.$http
+                .post("contact", {
+                    form: this.form,
+                })
+                .then((response) => {
+                    this.form = {
+                        name: "",
+                        phone: "",
+                        adress: "",
+                        pays: "",
+                       
+                        entité:"false",
+                        message: "",
+                        
+                    };
+                    
+                })
+                .catch((error) => {
+                    // console.error("eoor", error);
+                });
+        },
         methods: {
     isRequired(value) {
       if (value && value.trim()) {

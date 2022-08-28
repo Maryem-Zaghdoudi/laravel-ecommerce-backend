@@ -52,6 +52,21 @@ const router = createRouter({
             name: "About",
             component: () => import("../views/ShopDev.vue"),
         },
+        {
+            path: "/loginfreelancer",
+            name: "loginfreelancer",
+            component: () => import("../views/Freelancer/LoginFreelancer.vue"),
+        },
+        {
+            path: "/sginfreelancer",
+            name: "sginfreelancer",
+            component: () => import("../views/Freelancer/SginFreelancer.vue"),
+        },
+        {
+            path: "/welcomepage",
+            name: "welcomepage",
+            component: () => import("../views/Freelancer/WelcomePage.vue"),
+        },
     ],
 });
 

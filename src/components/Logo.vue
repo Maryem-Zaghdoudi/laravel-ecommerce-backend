@@ -1,8 +1,8 @@
 <template>
     <img
         alt="intone digitals logo"
-        class="logo ml-6 lg:ml-24 mt-4 lg:mt-8"
+        class="logo lg:px-0 px-3"
         src="@/assets/logo-black.svg"
-        width="150"
+        width="125"
     />
 </template>

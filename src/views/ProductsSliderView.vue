@@ -26,16 +26,15 @@
                         les
                         meilleurs projets de
                         développement web et mobile, Etc.</p>
-<<<<<<< HEAD
+
+
+
+                   
 
 
                     <RouterLink to="/marketing" class=" font-bold text-center text-lg md:text-3xl ">
                         Decouvrir
 
-=======
-                    <RouterLink to="/marketing" class=" font-bold text-center text-lg md:text-3xl ">
-                        Decouvrir
->>>>>>> 07c832d4f259fcf0d8f013b9f166c7c0e16b15e2
                         <font-awesome-icon icon="greater-than" class=" font-bold" />
                     </RouterLink>
                 </div>

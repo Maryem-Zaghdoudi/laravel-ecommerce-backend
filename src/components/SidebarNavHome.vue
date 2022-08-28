@@ -6,6 +6,7 @@
         :class="[opened ? 'w-80' : 'w-0  ']"
     >
         <!-- transition-all duration-700 -->
+          
 
         <ul>
             <li class="py-5">

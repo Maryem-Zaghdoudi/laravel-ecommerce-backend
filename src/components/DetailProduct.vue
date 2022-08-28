@@ -119,24 +119,28 @@
            
               </div>
         </div>
-        
-            <form class=" mt-9 " >
+        <!-- form1 -->
+        <form class=" mt-9 " @submit.prevent="goToStep()" >
+            
               
                 <div class="grid  mb-6 lg:grid-cols-3  gap-4">
                   
                     <div>
     
-    <select id="location" name="location" class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+    <select  id="location" name="location" class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
       <option>United States</option>
       <option selected="">Entité</option>
       <option>Mexico</option>
     </select>
   </div>
                     <div class="lg:col-span-2">
-                        <input type="text" id="last_name" 
+                        <input  v-model="form.nom" type="text" id="y" 
                             class="bg-[#ffffff] text-gray-900 text-sm rounded-lg border border-gray-300 block w-full p-2"
                             placeholder="Nom Complet"   required />
                            
+                         <span class="text-red-700">{{errors}}</span>   
+                                 
+                            
                             
                     </div>
                     
@@ -151,13 +155,13 @@
     </select>
   </div>
                       <div class="lg:col-span-3">
-                        <input type="text" id="last_name"
+                        <input v-model="form.phone" type="text" id="last_name"
                             class="bg-[#ffffff] text-gray-900 text-sm border border-gray-300 rounded-lg block w-full p-2"
                             placeholder="Numéro de téléphone" required />
                     </div>
                 </div>
                 <div class="grid gap-6 mb-6 lg:grid-cols-1">
-                    <input type="text" id="default-input"
+                    <input v-model="form.email" type="text" id="default-input"
                         class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-lg block w-full p-2"
                         placeholder="Adresse électronique" />
                 </div>
@@ -182,12 +186,12 @@
     </select>
   </div>
                     <div>
-                        <input type="text" id="last_name"
+                        <input v-model="form.service" type="text" id="last_name"
                             class="bg-[#ffffff] text-gray-900 text-sm rounded-lg border border-gray-300 block w-full p-2"
                             placeholder="Votre Service" required />
                     </div>
                 </div>
-            </form>
+           
             <div class="text-black font-blod text-base text-center">
                              Je veux être contacté(e)
                    </div>
@@ -202,6 +206,7 @@
                    <div class="text-center">
                     <button @click.prevent="goToStep(2)" class="text-white bg-[#0064D2] leading-6 font-medium rounded-full text-base w-full lg:w-[400px] p-2">Envoyer</button>
                    </div>
+                   </form>
         </div>
          <!-- step2 -->
         <div class="" id="user_detail2" v-if="step == 2">
@@ -490,11 +495,20 @@ import {
 
 </script>
 <script>
-
+import { ExclamationCircleIcon } from '@heroicons/vue/solid'
 export default {
+  components: {
+    ExclamationCircleIcon,
+  },
   name: "modal",
   data() {
     return {
+      form:{
+        nom:"",
+         phone: "",
+          email: "",
+          service: "",
+      },
       showDetail: true,
       step: 1,
       totalsteps:4,
@@ -510,10 +524,11 @@ export default {
     console.log('ready');
   },
    methods:{
+      
     goToStep: function(){
       if(this.step == 1)
       {
-        if(!this.form.nomcomplet)
+        if(!this.form.nom )
         {
           this.errors = 'please fill out your name';
           return true;
