@@ -16,9 +16,9 @@ class TagController extends Controller
     {
         $tags=Tag::all();
         
-        return response()->json([
-            'tags' => $tags
-        ]);
+        return response()->json(
+            $tags
+        );
 
 
     }

@@ -32,7 +32,7 @@ Route::post('search', [ProductCategoryController::class , 'search']);
 Route::get('product/{id}', [ProductController::class , 'find_product']);
 Route::get('count', [ProductController::class , 'count']);
 
-
+Route::get('products_by_tag/{id}', [ProductController::class, 'products_by_tag']);
 Route::get('products_by_category/{id}', [ProductController::class, 'products_by_category']);
 
 Route::resource('categories', CategoryController::class);

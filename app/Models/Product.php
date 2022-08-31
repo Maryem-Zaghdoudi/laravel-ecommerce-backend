@@ -40,10 +40,10 @@ class Product extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class , 'tag_products');
     }
 
-    public function sluggable()
+    public function sluggable():array
 {
     return [
         'slug' => [
