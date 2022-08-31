@@ -75,6 +75,7 @@ export default {
 </script>
 
 <template>
+<div>
   <img src="@/assets/bg-2.png" class="block bg-no-repeat bg-cover min-h-[110px] w-full " alt="Motorbike Smoke" />
 
   <main class="lg:px-24 ">
@@ -268,4 +269,5 @@ export default {
       </div> 
     </div>
   </main>
+</div>
 </template>

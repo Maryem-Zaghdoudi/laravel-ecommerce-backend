@@ -38,7 +38,7 @@ import 'flowbite';
 
 
 
-Axios.defaults.baseURL = 'https://feelnfill-admin.tundev.tn/api';
+ Axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
 // Axios.defaults.baseURL = 'http://localhost:8000/api';
 // Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'https://www.feelnfill-preprod.tundev.tn/'
 

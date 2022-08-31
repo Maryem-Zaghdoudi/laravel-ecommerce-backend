@@ -2,34 +2,19 @@
 <div>
         <div class="grid grid-cols-2 py-14 px-5 ">
           <div>
-            <h1 class="font-bold text-2xl">Minimal Zebra Logo</h1>
+            <h1 class="font-bold text-2xl">{{ product.title }}</h1>
             <p class="font-ProductSans text-sm">
               Free 2 Days Shipping | 1 Year Warranty
             </p>
           </div>
           <div class="">
-            <h1 class="font-bold text-4xl lg:px-24">€580</h1>
+            <h1 class="font-bold text-4xl lg:px-24" > €{{ product.price }}</h1>
           </div>
         </div>
         <div class="px-5">
           <div class="font-semibold text-base">Discription</div>
           <ul class="list-disc px-6 text-sm font-semibold">
-            <li>15 cm (6.1-inch) Super Retina XDR display</li>
-            <li>
-              2MP TrueDepth front camera with Night mode, 4K Dolby Vision HDR
-              recording
-            </li>
-            <li>A15 Bionic chip for lightning-fast performance</li>
-            <li>Up to 19 hours of video playback</li>
-            <li>Durable design with Ceramic Shield</li>
-            <li>Industry-leading IP68 water resistance</li>
-            <li>
-              iOS 15 packs new features to do more with iPhone than ever before
-            </li>
-            <li>
-              Supports MagSafe accessories for easy attachment and faster
-              wireless charging
-            </li>
+            {{product.description}}
           </ul>
         </div>
         <div class="lg:py-28 px-5">
@@ -495,7 +480,9 @@ import {
 
 </script>
 <script>
+import axios from "axios"; 
 import { ExclamationCircleIcon } from '@heroicons/vue/solid'
+
 export default {
   components: {
     ExclamationCircleIcon,
@@ -520,12 +507,13 @@ export default {
       toggleModal2: false
     };
   },
-  ready:function(){
+
+  methods:{
+    ready:function(){
     console.log('ready');
   },
-   methods:{
-      
-    goToStep: function(){
+        
+  goToStep: function(){
       if(this.step == 1)
       {
         if(!this.form.nom )
@@ -540,5 +528,11 @@ export default {
      this.step--;
     }
   },
-}
+  async created(){
+         
+         
+          
+  
+
+}}
 </script>

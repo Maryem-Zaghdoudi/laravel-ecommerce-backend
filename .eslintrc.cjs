@@ -17,4 +17,8 @@ module.exports = {
             extends: ["plugin:cypress/recommended"],
         },
     ],
+    rules: {
+        
+        rules: {"vue/no-multiple-template-root": "off" }
+   }
 };

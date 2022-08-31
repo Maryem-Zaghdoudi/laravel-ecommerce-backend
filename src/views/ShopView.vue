@@ -23,12 +23,7 @@ const sortOptions = [
   { name: 'Price: Low to High', href: '#', current: false },
   { name: 'Price: High to Low', href: '#', current: false },
 ]
-const subCategories = [
-  { name: 'Identité Visuelle', href: '#', count:'320' },
-  { name: 'Logos', href: '#', count:'112' },
-  { name: '3D', href: '#', count:'112' },
 
-]
 const subFilters = [
   { name: 'Derniers projets', href: '#', count:'112' },
   { name: 'Projets en réduction', href: '#', count:'112' },
@@ -43,63 +38,63 @@ const subPropriétés = [
 ]
 
 
-const products = [
-  {
-    id: 1,
-    name: 'Logo Zebra Brand',
-    href: '#',
-    imageSrc: 'src/assets/products/1.png',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$86',
+// const products = [
+//   {
+//     id: 1,
+//     name: 'Logo Zebra Brand',
+//     href: '#',
+//     imageSrc: 'src/assets/products/1.png',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$86',
 
-  },
-  {
-    id: 2,
-    name: 'Logo Zebra Brand',
-    href: '#',
-    imageSrc: 'src/assets/products/2.png',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$105',
+//   },
+//   {
+//     id: 2,
+//     name: 'Logo Zebra Brand',
+//     href: '#',
+//     imageSrc: 'src/assets/products/2.png',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$105',
 
-  },
-  {
-    id: 3,
-    name: 'Logo Zebra Brand',
-    href: '#',
-    imageSrc: 'src/assets/products/3.png',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '180 €',
+//   },
+//   {
+//     id: 3,
+//     name: 'Logo Zebra Brand',
+//     href: '#',
+//     imageSrc: 'src/assets/products/3.png',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '180 €',
 
-  },
-  {
-    id: 4,
-    name: 'Logo Zebra Brand',
-    href: '#',
-    imageSrc: 'src/assets/products/4.png',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '180 €',
+//   },
+//   {
+//     id: 4,
+//     name: 'Logo Zebra Brand',
+//     href: '#',
+//     imageSrc: 'src/assets/products/4.png',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '180 €',
 
-  },
-  {
-    id: 5,
-    name: 'Logo Zebra Brand',
-    href: '#',
-    imageSrc: 'src/assets/products/5.png',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '180 €',
+//   },
+//   {
+//     id: 5,
+//     name: 'Logo Zebra Brand',
+//     href: '#',
+//     imageSrc: 'src/assets/products/5.png',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '180 €',
 
-  },
-  {
-    id: 6,
-    name: 'Logo Zebra Brand',
-    href: '#',
-    imageSrc: 'src/assets/products/6.png',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '180 €',
+//   },
+//   {
+//     id: 6,
+//     name: 'Logo Zebra Brand',
+//     href: '#',
+//     imageSrc: 'src/assets/products/6.png',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '180 €',
 
-  },
-  // More products...
-]
+//   },
+//   // More products...
+// ]
 
 
 const mobileFiltersOpen = ref(false)
@@ -120,11 +115,165 @@ function ShowModal() {
 
 </script>
 
+<script>
+import axios from "axios"; 
+export default {
+   
+      data() {
+        return {
+            products: [],
+            count : 0,
+            filtredProducts:[],
+            categories:[],
+            subCategories:[],
+            subCategories0:[],
+            children:[],
+            tags:[],
+            // category_id:1,
+            search:{
+              word:'',
+              tags:[],
+              subCategories:null,
+              categoryPosition1:null,
+              category_id:null,
+              isInPromotion:false,
+              isRecent:false,
+              price_min:0,
+              price_max:null, 
+              category_dropdown: null,
+            },
+            isSearching: false
+
+        };
+    },
+
+ watch: {
+    search: {
+        handler(){
+          this.searchProducts()
+        
+        },
+        deep: true
+      },
+      
+    //   'search.category_dropdown': function (newVal, oldVal){
+       
+    //      this.search.category_id=newVal;
+         
+    //  },
+    //   'search.categoryPosition1': function (newVal, oldVal){
+    //      this.search.category_id=newVal;
+    //  },
+    categoryTable:{
+         handler(newValue, oldValue) {
+        
+          if (newValue[0] !== oldValue[0]) {
+            this.search.category_id=newValue[0]
+           
+            // console.log(newValue[0])
+          }
+          else{
+            this.search.category_id=newValue[1]
+          }
+          this.search.subCategories=null
+          this.getSubCategories()
+       
+        
+    },
+       deep:true}
+    
+  },
+  computed:{
+    categoryTable(){
+     return [this.search.category_dropdown, this.search.categoryPosition1];
+    }
+  },
+  mounted(){
+    
+  },
+methods:{
+  getSubCategories(){
+   
+    this.axios.get('/category/' + this.search.category_id)
+            .then((response) =>{
+              this.subCategories = response.data
+              console.log(response.data)
+            })
+  },
+  toggleCategory(){
+    let x= this.search.categoryPosition1
+    this.search.categoryPosition1=null
+    this.search.categoryPosition1=x
+  },
+  async setcategoryPosition1($id){
+    this.search.categoryPosition1=$id;
+  },
+
+  async searchProducts(){
+      this.axios.post('/search', {word:this.search.word , subCategories:this.search.subCategories , 
+        promo:this.search.isInPromotion , recent:this.search.isRecent , 
+        min: this.search.price_min , max :this.search.price_max , category_id: this.search.category_id , tags : this.search.tags})
+
+      .then((response)=>{
+            this.filtredProducts =response.data
+            console.log(response.data)
+      })
+    }
+},
+    async created(){
+        
+          this.axios.get('/categories')
+            .then((response) => {
+                this.categories = response.data.Allcategories
+                console.log(this.categories)
+            })
+            this.axios.get('/tags')
+            .then((response) => {
+                this.tags = response.data
+                console.log(this.tags)
+            })
+
+        if(this.category_id ==null){
+            this.axios.get('/category/1' )
+            .then((response) =>{
+              this.subCategories = response.data
+              console.log(response.data)
+            })
+        }
+            this.axios.get('/products_by_category/1'  )
+            .then((response) =>{
+              // this.filtredProducts =  response.data
+              // console.log(response.data)
+;              var array=new Array()
+              for(let i=0 ; i<response.data.length;i++){
+                array=array.concat(response.data[i])
+              }
+              this.filtredProducts =array
+              console.log(array)
+            })
+            this.axios.get('category0/1')
+            .then((response) =>{
+              this.subCategories0 = response.data
+             console.log(response.data)
+            })
+          this.axios.get('/count' )
+          .then ((response)=>{
+            this.count = response.data
+            console.log(this.count.promo)
+          })
+            .catch( function (error){
+                console.log(error);
+            });
+      }}
+    
+
+</script>
+
 <template>
 
 
 
-
+<div>
   <main class="  h-full  font-ProductSans text-primary ">
 
 
@@ -139,20 +288,17 @@ function ShowModal() {
 
 
         <div class="flex  justify-center  my-8">
-          <select
+          <select v-model="search.category_dropdown"
             class=" md:px-9 items-center py-2.5  text-sm font-medium text-center text-primary bg-gray-100 border border-gray-300 rounded-l-[30px]  focus:ring-4 focus:outline-none ">
             <option>Toutes Catégories</option>
-            <option>Modèle Graphique</option>
-            <option>Documents</option>
-            <option>Modéles 3D</option>
-            <option>UX / UI</option>
-            <option>Vidéos</option>
+            <option  v-for="category in categories" :value="category.id" :key="category.id"> {{ category.name }}</option>
+
           </select>
 
 
-          <input type="search" id="location-search"
+          <input type="search" id="name_search" v-model="search.word"
             class="w-full max-w-[300px]  text-primary text-center block p-2.5  z-20 text-sm   bg-gray-50 rounded-r-[30px] border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Recherche produit, catégorie ..." required>
+            placeholder="Recherche produit, catégorie ..." required  >
 
         </div>
       </div>
@@ -161,14 +307,13 @@ function ShowModal() {
     </div>
 
 
-
     <div class=" flex flex-wrap justify-center gap-x-2  ">
       <!--   Modèle Graphique -->
-      <Menu as="div" class="relative inline-block text-left">
+      <Menu as="div" class="relative inline-block text-left" @click="toggleCategory"   v-for="Propriétés in subCategories0"  :key="Propriétés.name" >
         <div>
-          <MenuButton
+          <MenuButton 
             class="inline-flex justify-center w-full rounded-md    px-4 py-2   text-base font-medium text-primary hover:bg-gray-50  ">
-            Modèle Graphique
+            {{ Propriétés.name }}
             <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
           </MenuButton>
         </div>
@@ -177,186 +322,15 @@ function ShowModal() {
           enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
           leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
           leave-to-class="transform opacity-0 scale-95">
-          <MenuItems
+          <MenuItems 
             class="origin-top-left absolute left-0 mt-2 w-32 z-50    rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div class="py-1">
-              <MenuItem v-slot="{ active }">
+            <div class="py-1" >
+              <MenuItem v-slot="{ active }" v-for="child in Propriétés.children" :key="child.name" @click="setcategoryPosition1(child.id)">
               <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Account
-                settings</a>
+                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">
+                {{ child.name }}</a>
               </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Support</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">License</a>
-              </MenuItem>
-              <form method="POST" action="#">
-                <MenuItem v-slot="{ active }">
-                <button type="submit"
-                  :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full text-left px-4 py-2 text-sm']">Sign
-                  out</button>
-                </MenuItem>
-              </form>
-            </div>
-          </MenuItems>
-        </transition>
-      </Menu>
-      <!--   Documents -->
-      <Menu as="div" class="relative inline-block text-left">
-        <div>
-          <MenuButton
-            class="inline-flex justify-center w-full rounded-md    px-4 py-2   text-base font-medium text-primary hover:bg-gray-50  ">
-            Documents
-            <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-          </MenuButton>
-        </div>
-
-        <transition enter-active-class="transition ease-out duration-100"
-          enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-          leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
-          leave-to-class="transform opacity-0 scale-95">
-          <MenuItems
-            class="origin-top-left absolute left-0 mt-2 w-32 z-50    rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div class="py-1">
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Account
-                settings</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Support</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">License</a>
-              </MenuItem>
-              <form method="POST" action="#">
-                <MenuItem v-slot="{ active }">
-                <button type="submit"
-                  :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full text-left px-4 py-2 text-sm']">Sign
-                  out</button>
-                </MenuItem>
-              </form>
-            </div>
-          </MenuItems>
-        </transition>
-      </Menu>
-      <!--   Modéles 3D -->
-      <Menu as="div" class="relative inline-block text-left">
-        <div>
-          <MenuButton
-            class="inline-flex justify-center w-full rounded-md    px-4 py-2   text-base font-medium text-primary hover:bg-gray-50  ">
-            Modéles 3D
-            <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-          </MenuButton>
-        </div>
-
-        <transition enter-active-class="transition ease-out duration-100"
-          enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-          leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
-          leave-to-class="transform opacity-0 scale-95">
-          <MenuItems
-            class="origin-top-left absolute left-0 mt-2 w-32 z-50    rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div class="py-1">
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Account
-                settings</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Support</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">License</a>
-              </MenuItem>
-              <form method="POST" action="#">
-                <MenuItem v-slot="{ active }">
-                <button type="submit"
-                  :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full text-left px-4 py-2 text-sm']">Sign
-                  out</button>
-                </MenuItem>
-              </form>
-            </div>
-          </MenuItems>
-        </transition>
-      </Menu>
-      <!--   UX / UI -->
-      <Menu as="div" class="relative inline-block text-left">
-        <div>
-          <MenuButton
-            class="inline-flex justify-center w-full rounded-md    px-4 py-2   text-base font-medium text-primary hover:bg-gray-50  ">
-            UX / UI
-            <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-          </MenuButton>
-        </div>
-
-        <transition enter-active-class="transition ease-out duration-100"
-          enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-          leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
-          leave-to-class="transform opacity-0 scale-95">
-          <MenuItems
-            class="origin-top-left absolute left-0 mt-2 w-32 z-50    rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div class="py-1">
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Account
-                settings</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Support</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">License</a>
-              </MenuItem>
-              <form method="POST" action="#">
-                <MenuItem v-slot="{ active }">
-                <button type="submit"
-                  :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full text-left px-4 py-2 text-sm']">Sign
-                  out</button>
-                </MenuItem>
-              </form>
-            </div>
-          </MenuItems>
-        </transition>
-      </Menu>
-      <!--   Vidéos -->
-      <Menu as="div" class="relative inline-block text-left">
-        <div>
-          <MenuButton
-            class="inline-flex justify-center w-full rounded-md    px-4 py-2   text-base font-medium text-primary hover:bg-gray-50  ">
-            Vidéos
-            <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-          </MenuButton>
-        </div>
-
-        <transition enter-active-class="transition ease-out duration-100"
-          enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-          leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
-          leave-to-class="transform opacity-0 scale-95">
-          <MenuItems
-            class="origin-top-left absolute left-0 mt-2 w-32 z-50    rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div class="py-1">
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Account
-                settings</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Support</a>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <a href="#"
-                :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">License</a>
-              </MenuItem>
+             
               <form method="POST" action="#">
                 <MenuItem v-slot="{ active }">
                 <button type="submit"
@@ -369,15 +343,8 @@ function ShowModal() {
         </transition>
       </Menu>
 
-
-
+ 
     </div>
-
-
-
-
-
-
 
   </main>
 
@@ -410,14 +377,13 @@ function ShowModal() {
                   </button>
                 </div>
 
-
                 <form class="mt-4 border-t border-gray-200 text-primary p-4 ">
                   <h3 class="sr-only">Propriétés</h3>
                   <ul role="list" class="font-medium  px-2 py-3">
                     <h1 class="font-bold font-ProductSans text-lg capitalize">category</h1>
                     <li class="grid grid-cols-4" v-for="Propriétés in subCategories" :key="Propriétés.name">
                      <div class="col-span-3">
-                    <a :href="Propriétés.href">
+                    <a :href="Propriétés.href" >
                     {{ Propriétés.name }}
                   </a>
                   </div>
@@ -454,36 +420,37 @@ function ShowModal() {
                   <h3 class="sr-only">Propriétés</h3>
                   <ul role="list" class="font-medium  px-2 py-3">
                     <h1 class="font-bold font-ProductSans text-lg capitalize">Propriétés</h1>
-                    <li class="grid grid-cols-4" v-for="Propriétés in subPropriétés" :key="Propriétés.name">
+                    <li class="grid grid-cols-4" v-for="tag in tags" :key="tag.id">
                       <div class="col-span-3">
-                    <a :href="Propriétés.href">
-                    {{ Propriétés.name }}
-                  </a>
+                      <input type="checkbox" :id="tag.id" :value="tag.name" v-model="search.tags" >
+                    {{ tag.name }}
+                
+
                   </div>
                   
-                  <div class="">
+                  <!-- <div class="">
                     <div class="w-9 h-4  rounded-full bg-[#F4F8EC] flex justify-center items-center">
                         <div class="text-xs font-semibold text-secondary">
                           {{ Propriétés.count }}
                         </div>
                     </div>
-                    </div>
+                    </div> -->
                     </li>
                   </ul>
                   <h3 class="sr-only">Propriétés</h3>
                   <ul role="list" class="text-sm font-medium  space-y-4 pb-6 px-2 ">
                     <h1 class="font-bold font-ProductSans text-lg capitalize">Prix</h1>
-                    <input id="minmax-range" type="range" min="0" max="10" value="5"
+                    <input id="minmax-range" type="range" min="0" max="10" value="5" 
                       class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
                     <div class="flex flex-row gap-8">
                       <div>
                         <label for="small-input" class="block mb-2 text-sm font-medium capitalize  ">min</label>
-                        <input type="text" id="small-input"
+                        <input type="text" id="small-input" v-model="search.price_min"
                           class="h-10 w-[100px] block p-2   bg-gray-50 rounded-lg border border-gray-300   focus:ring-blue-500 focus:border-blue-500" />
                       </div>
                       <div>
                         <label for="small-input" class="block mb-2 text-sm font-medium capitalize ">max</label>
-                        <input type="text" id="small-input"
+                        <input type="text" id="small-input" v-model="search.price_max"
                           class="h-10 w-[100px] block p-2   bg-gray-50 rounded-lg border border-gray-300  focus:ring-blue-500 focus:border-blue-500 " />
                       </div>
 
@@ -529,17 +496,17 @@ function ShowModal() {
               <h3 class="sr-only">Propriétés</h3>
               <ul role="list" class="text-sm font-medium  space-y-4 pb-6 ">
                 <h1 class="font-bold font-ProductSans text-lg capitalize">category</h1>
-                <li class="grid grid-cols-4" v-for="Propriétés in subCategories" :key="Propriétés.name">
+                <li class="grid grid-cols-4" v-for="category in subCategories" :key="category.name">
                    <div class="col-span-3">
-                    <a :href="Propriétés.href">
-                    {{ Propriétés.name }}
-                  </a>
+                    <input type="radio" :value="category.id" :id="category.name "  v-model="search.subCategories">
+                    {{ category.name }}
+                  
                   </div>
                   
                   <div class="">
                     <div class="w-9 h-4  rounded-full bg-[#F4F8EC] flex justify-center items-center">
                         <div class="text-xs font-semibold text-secondary">
-                          {{ Propriétés.count }}
+                          {{ category.count }}
                         </div>
                     </div>
                     </div>
@@ -549,38 +516,54 @@ function ShowModal() {
 
               <ul role="list" class="text-sm font-medium  space-y-4 pb-6  ">
                 <h1 class="font-bold font-ProductSans text-lg capitalize">Filtres</h1>
-                <li class="grid grid-cols-4" v-for="Propriétés in subFilters" :key="Propriétés.name">
+                <li class="grid grid-cols-4" >
                    <div class="col-span-3">
-                    <a :href="Propriétés.href">
-                    {{ Propriétés.name }}
-                  </a>
+                    <input type="checkbox"  v-model="search.isInPromotion">
+                      Projets en réduction
+ 
                   </div>
                   
                   <div class="">
                     <div class="w-9 h-4  rounded-full bg-[#F4F8EC] flex justify-center items-center">
                         <div class="text-xs font-semibold text-secondary">
-                          {{ Propriétés.count }}
+                          {{ count.promo }}
                         </div>
                     </div>
                     </div>
                 </li>
-              </ul>
-              <ul role="list" class="text-sm font-medium  space-y-4 pb-6 ">
-                <h1 class="font-bold font-ProductSans text-lg capitalize">Propriétés</h1>
-                <li class="grid grid-cols-4" v-for="Propriétés in subPropriétés" :key="Propriétés.name">
-                  <div class="col-span-3">
-                    <a :href="Propriétés.href">
-                    {{ Propriétés.name }}
-                  </a>
+                <li class="grid grid-cols-4" >
+                   <div class="col-span-3">
+                    <input type="checkbox"  v-model="search.isRecent">
+                  Derniers projets  
+                  
                   </div>
                   
                   <div class="">
                     <div class="w-9 h-4  rounded-full bg-[#F4F8EC] flex justify-center items-center">
                         <div class="text-xs font-semibold text-secondary">
-                          {{ Propriétés.count }}
+                          {{ count.recent }}
                         </div>
                     </div>
                     </div>
+                </li>
+
+              </ul>
+              <ul role="list" class="text-sm font-medium  space-y-4 pb-6 ">
+                <h1 class="font-bold font-ProductSans text-lg capitalize">Propriétés</h1>
+                <li class="grid grid-cols-4" v-for="tag in tags" :key="tag.id">
+                  <div class="col-span-3">
+                    <input type="checkbox" :value="tag.name" v-model="search.tags">
+                      {{ tag.name }}
+                 
+                  </div>
+                  
+                  <!-- <div class="">
+                    <div class="w-9 h-4  rounded-full bg-[#F4F8EC] flex justify-center items-center">
+                        <div class="text-xs font-semibold text-secondary">
+                          {{ count.tag.name}}
+                        </div>
+                    </div>
+                    </div> -->
                 </li>
               </ul>
               <ul role="list" class="text-sm font-medium  space-y-4 pb-6  ">
@@ -590,12 +573,12 @@ function ShowModal() {
                 <div class="flex flex-row gap-8">
                   <div>
                     <label for="small-input" class="block mb-2 text-sm font-medium capitalize  ">min</label>
-                    <input type="text" id="small-input"
+                    <input type="text" v-model="search.price_min" id="small-input"
                       class="h-10 w-[100px] block p-2   bg-gray-50 rounded-lg border border-gray-300   focus:ring-blue-500 focus:border-blue-500" />
                   </div>
                   <div>
                     <label for="small-input" class="block mb-2 text-sm font-medium capitalize ">max</label>
-                    <input type="text" id="small-input"
+                    <input type="text" v-model="search.price_max" id="small-input"
                       class="h-10 w-[100px] block p-2   bg-gray-50 rounded-lg border border-gray-300  focus:ring-blue-500 focus:border-blue-500 " />
                   </div>
 
@@ -625,33 +608,37 @@ function ShowModal() {
 
               <div
                 class=" font-ProductSans grid md:grid-cols-2 xl:grid-cols-3 gap-y-6 gap-x-14    py-16 justify-items-center  ">
+            
+                  <div  v-for="product in filtredProducts"
+                    :key="product.id"
+                    class="bg-white rounded-[30px] border  border-gray-300 shadow-2xl  w-full  max-w-xs mt-0 inline-grid justify-items-center  text-primary ">
+  <RouterLink
+                    
+                    class="group"
+                    :to="{
+                        name: 'product-details',
+                        params: { id:product.id },
+                    }"
+                >   
+                        <!-- <RouterLink to="/product/:product" > -->
+                            <img :src="product.imageSrc" :alt="product.imageAlt" class="rounded-[30px] h-60   
+                                object-cover   w-full " />
 
-                <div v-for="product in products" :key="product.id" 
-                  class="bg-white rounded-[30px] border  border-gray-300 shadow-2xl  w-full  max-w-xs mt-0 inline-grid justify-items-center  text-primary ">
+                            <div class="mt-2 font-[400] text-center  " aria-hidden="true">
+                              {{ product.title   }}
+                            </div>
+                            <div class="mt-2  text-2xl  font-[700] text-center">
+                              $ {{ product.price }}
+                            </div>
+                        </RouterLink>
+                        <div class="mt-2 mb-4 text-center">
+                          <span class="text-secondary font-bold text-center font-ProductSans text-base">
+                            Acheter
+                          </span>
 
-                   <RouterLink to="/product/:product" class="w-full">
-                  <img :src="product.imageSrc" :alt="product.imageAlt" class="rounded-[30px] h-60   
-                      object-cover   w-full " />
-
-                  <div class="mt-2 font-[400] text-center  " aria-hidden="true">
-                    {{ product.name }}
+                          <font-awesome-icon class="text-secondary font-bold" icon="check" />
+                        </div>
                   </div>
-                  <div class="mt-2  text-2xl  font-[700] text-center">
-                    {{ product.price }}
-                  </div>
-                  </RouterLink>
-                  <div class="mt-2 mb-4 text-center">
-                    <span class="text-secondary font-bold text-center font-ProductSans text-base">
-                      Acheter
-                    </span>
-
-                    <font-awesome-icon class="text-secondary font-bold" icon="check" />
-                  </div>
-
-
-
-
-                </div>
               </div>
 
 
@@ -663,7 +650,7 @@ function ShowModal() {
     </div>
   </div>
 
-
+</div>
 
 
 
