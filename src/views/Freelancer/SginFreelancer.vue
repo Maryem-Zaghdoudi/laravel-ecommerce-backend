@@ -34,13 +34,13 @@
     <div class="lg:px-72 px-5 mb-5">
         <input name="field"   type="text" id="default-input"
                             class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-full block w-full p-3"
-                            placeholder="Nom complet" />
+                            placeholder="Nom complet" v-model=" name"/>
 
     </div>
     <div class="lg:px-72 px-5 mb-10">
         <input name="field"   type="text" id="default-input"
                             class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-full block w-full p-3"
-                            placeholder="Adresse électronique" />
+                            placeholder="Adresse électronique" v-model="email"/>
 
     </div>
     <div class=" mb-8">
@@ -52,8 +52,9 @@
 
     </div>
     <div class="">
-        <a href="#" class="text-sm font-medium leading-tight text-gray-900">J’ai déja un compte<font-awesome-icon icon="greater-than" class="text-secondary px-2 font-bold w-2  items-center" /></a>
-           
+      
+        <a @click.prevent="redirectLogin()" href="#" class="text-sm font-medium leading-tight text-gray-900">J’ai déja un compte<font-awesome-icon icon="greater-than" class="text-secondary px-2 font-bold w-2  items-center" /></a>
+      
     </div>
   </form>
   </div>
@@ -61,14 +62,14 @@
            <form class=" flex-col text-center" >
      <div class="grid md:grid-cols-2 grid-cols-1 gap-5 lg:px-64 px-3 mb-8">
       <div>
-        <select  id="location" name="location" class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-full">
+        <select v-model=" city" id="location" name="location" class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-full">
       <option>United States</option>
       <option selected="true">Profession</option>
       <option>Mexico</option>
     </select>
       </div>
       <div>
-        <select id="location" name="location" 
+        <select id="location" name="location"  v-model="state"
                             class=" block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-full">
                             <option>FR</option>
                             <option selected="true" >Date de naissance</option>
@@ -127,7 +128,7 @@
     <div class="lg:px-72 px-5 mb-5">
         <input name="field"   type="text" id="default-input"
                             class="bg-[#ffffff] text-gray-900 border border-gray-300 text-sm rounded-full block w-full p-3"
-                            placeholder="Mot de passe" />
+                            placeholder="Mot de passe" v-model="password"/>
 
     </div>
     <div class="lg:px-72 px-5 mb-10">
@@ -140,7 +141,7 @@
     
      <div class="grid md:grid-cols-2 grid-cols-1 gap-5 lg:px-96 px-10">
      <button class="inline-flex items-center justify-center w-80 h-11 p-3.5 text-blue-500 border-2 bg-white shadow rounded-full">Retour</button>
-      <button href="#" class="inline-flex items-center justify-center w-80 h-11 p-3.5 text-white border-2 bg-blue-500 shadow rounded-full">Suivant</button>
+      <button @click.prevent="register()" href="#" class="inline-flex items-center justify-center w-80 h-11 p-3.5 text-white border-2 bg-blue-500 shadow rounded-full">Suivant</button>
      </div>
   </form>
   </div>
@@ -158,33 +159,53 @@
 
 </template>
 <script>
+import axios from 'axios';
 
 export default {
   name: "modal",
   data() {
     return {
       activePhase: 1,
-        user_detail1: {
+        
             name: '',
             email: ''
-        },
-        user_detail2: {
+        ,
+      
             city: '',
             state: ''
-        },
-     
+        ,
+     password:'',
      
       toggleModal: false,
      
     };
   },
-  ready:function(){
-    console.log('ready');
-  },
+  
   methods:{
     goToStep: function(step){
       this.activePhase = step;
-    }
+    },
+    redirectLogin(){
+        this.$router.push({
+          name:"loginfreelancer"
+        });
+        
+        },
+    register(){
+
+        
+//  axios.get('sanctum/csrf-cookie').then((response=>{
+  // console.log("first axios")
+  axios.post('register' ,   {name:this.name ,email:this.email,  password:this.password})        
+    .then((response) =>{
+     
+      console.log("login")
+    })
+//  }))
+  
+ 
+}
+
   },
 }
 </script>
