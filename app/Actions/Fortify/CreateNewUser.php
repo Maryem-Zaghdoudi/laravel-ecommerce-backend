@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -36,6 +37,13 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'location'=>$input['location'],
+            'DateOfBirth'=>$input['DateOfBirth'],
+            'profesion'=>$input['profesion'],
+            'adress'=>$input['adress'],
+            'code'=>$input['code'],
+            'number'=>$input['number'],
+            // 'api_token' => Str::random(60),
         ]);
     }
 }
