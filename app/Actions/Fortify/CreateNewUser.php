@@ -43,7 +43,7 @@ class CreateNewUser implements CreatesNewUsers
             'adress'=>$input['adress'],
             'code'=>$input['code'],
             'number'=>$input['number'],
-            // 'api_token' => Str::random(60),
+            'api_token' => Str::random(60),
         ]);
     }
 }
